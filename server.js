@@ -7,6 +7,11 @@ const app = express();
 // DotEnv Config
 dotenv.config();
 
+// Routes
+const apiRoute = require('./routes/apiRoute');
+
+app.use('/', apiRoute);
+
 // Set App port
 app.set('port', process.env.PORT || 3000);
 
