@@ -1,0 +1,19 @@
+{
+  "name": "recipes-admin",
+  "version": "1.0.0",
+  "description": "App based on NodeJS (ExpressJS) and MongoDB",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Wyrobowa/recipes-admin.git"
+  },
+  "author": "Ania Wyroba",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Wyrobowa/recipes-admin/issues"
+  },
+  "homepage": "https://github.com/Wyrobowa/recipes-admin#readme"
+}
