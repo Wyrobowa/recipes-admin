@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const RecipeModel = mongoose.model('Recipe');
 
 const getRecipes = async (req, res) => {
-  const recipesList = await RecipeModel.find();
+  const recipesList = await RecipeModel.find().populate('category');
 
   res.json({
     data: recipesList,
