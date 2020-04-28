@@ -3,7 +3,7 @@ const express = require('express');
 // Controllers
 const {
   getRecipes,
-} = require('./../controllers/apiController');
+} = require('../controllers/apiController');
 
 const router = express.Router();
 

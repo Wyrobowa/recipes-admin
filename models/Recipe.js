@@ -3,9 +3,9 @@ const slug = require('slug');
 
 const RecipeSchema = new mongoose.Schema({
   slug: {
-   type: String,
-   lowercase: true,
-   unique: true,
+    type: String,
+    lowercase: true,
+    unique: true,
   },
   title: {
     type: String,
@@ -24,7 +24,7 @@ const RecipeSchema = new mongoose.Schema({
   category: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Category',
-  }
+  },
 });
 
 RecipeSchema.pre('save', async function (next) {

@@ -4,7 +4,7 @@ const express = require('express');
 const {
   getCategories,
   createCategory,
-} = require('./../controllers/categoryController');
+} = require('../controllers/categoryController');
 
 const router = express.Router();
 

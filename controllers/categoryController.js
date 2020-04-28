@@ -7,7 +7,7 @@ const getCategories = async (req, res) => {
 
   res.json({
     data: categories,
-  })
+  });
 };
 
 const createCategory = async (req, res) => {
@@ -16,7 +16,7 @@ const createCategory = async (req, res) => {
 
   res.json({
     data: category,
-  })
+  });
 };
 
 module.exports = {
