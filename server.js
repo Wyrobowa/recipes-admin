@@ -36,10 +36,10 @@ mongoose
 mongoose.connection.on('error', (error) => console.log(error));
 
 // Routes
-const apiRoute = require('./routes/apiRoute');
+const recipeRoute = require('./routes/recipeRoute');
 const categoryRoute = require('./routes/categoryRoute');
 
-app.use('/', apiRoute);
+app.use('/', recipeRoute);
 app.use('/', categoryRoute);
 
 // Set App port
