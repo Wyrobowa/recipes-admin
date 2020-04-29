@@ -29,8 +29,19 @@ const createRecipe = async (req, res) => {
   });
 };
 
+const updateRecipe = async (req, res) => {
+  const { slug } = req.params;
+
+  const recipe = await RecipeModel.findOneAndUpdate({ slug }, req.body);
+
+  res.json({
+    data: recipe,
+  });
+};
+
 module.exports = {
   getRecipesList,
   getRecipe,
   createRecipe,
+  updateRecipe,
 };
