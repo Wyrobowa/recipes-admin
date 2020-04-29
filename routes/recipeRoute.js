@@ -2,7 +2,8 @@ const express = require('express');
 
 // Controllers
 const {
-  getRecipes,
+  getRecipesList,
+  getRecipe,
   createRecipe,
 } = require('../controllers/recipeController');
 
@@ -11,10 +12,18 @@ const router = express.Router();
 /**
  * Get Recipes List
  *
- * @name getRecipes
+ * @name getRecipesList
  * @route {GET} /recipes
  */
-router.get('/recipes', getRecipes);
+router.get('/recipes', getRecipesList);
+
+/**
+ * Get Recipe
+ *
+ * @name getRecipe
+ * @route {GET} /recipe
+ */
+router.get('/recipe/:slug', getRecipe);
 
 /**
  * Create a recipe
