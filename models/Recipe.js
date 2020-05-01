@@ -20,10 +20,12 @@ const RecipeSchema = new mongoose.Schema({
   },
   photo: {
     type: String,
+    default: 'http://localhost:3000/img/default.jpg',
   },
   category: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Category',
+    default: '5e849f2cd339b789aa881e2d',
   },
 });
 

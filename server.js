@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
@@ -41,6 +42,9 @@ const categoryRoute = require('./routes/categoryRoute');
 
 app.use('/', recipeRoute);
 app.use('/', categoryRoute);
+
+// Set images folder public
+app.use('/img', express.static(path.join(__dirname, 'public/img')));
 
 // Set App port
 app.set('port', process.env.PORT || 3000);
