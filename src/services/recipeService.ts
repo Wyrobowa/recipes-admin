@@ -1,9 +1,16 @@
-import { mapRecipeRowToApi, mapRecipeWithCategoryRowToApi, type RecipeApi, type RecipeWithCategoryApi } from '../mappers/recipeMapper';
+import {
+  mapRecipeRowToApi,
+  mapRecipeWithCategoryRowToRecipeApi,
+  mapRecipeWithCategoryRowToApi,
+  type RecipeApi,
+  type RecipeWithCategoryApi,
+} from '../mappers/recipeMapper';
 import {
   createRecipe as createRecipeRepo,
   getRecipeBySlug,
   listRecipes,
   updateRecipeBySlugAndReturnPrevious,
+  type RecipeProductInput,
 } from '../repositories/recipeRepository';
 
 type CreateRecipeInput = {
@@ -12,6 +19,7 @@ type CreateRecipeInput = {
   recipe: string;
   photo?: string;
   category?: number | string;
+  products: RecipeProductInput[];
 };
 
 type UpdateRecipeInput = Partial<{
@@ -21,6 +29,7 @@ type UpdateRecipeInput = Partial<{
   photo: string;
   slug: string;
   category: number | string | null;
+  products: RecipeProductInput[];
 }>;
 
 const getRecipesList = async (): Promise<RecipeWithCategoryApi[]> => {
@@ -35,12 +44,23 @@ const getRecipe = async (slug: string): Promise<RecipeWithCategoryApi | null> =>
 
 const createRecipe = async (input: CreateRecipeInput): Promise<RecipeApi> => {
   const recipe = await createRecipeRepo(input);
-  return mapRecipeRowToApi(recipe);
+  const hydratedRecipe = await getRecipeBySlug(recipe.slug);
+
+  if (!hydratedRecipe) {
+    return mapRecipeRowToApi({ ...recipe, products: [] });
+  }
+
+  return mapRecipeWithCategoryRowToRecipeApi(hydratedRecipe);
 };
 
 const updateRecipe = async (slug: string, input: UpdateRecipeInput): Promise<RecipeApi | null> => {
   const recipe = await updateRecipeBySlugAndReturnPrevious(slug, input);
-  return recipe ? mapRecipeRowToApi(recipe) : null;
+
+  if (!recipe) {
+    return null;
+  }
+
+  return mapRecipeWithCategoryRowToRecipeApi(recipe);
 };
 
 export { getRecipesList, getRecipe, createRecipe, updateRecipe };

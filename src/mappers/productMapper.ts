@@ -4,6 +4,7 @@ type ProductApi = {
   _id: string;
   name: string;
   unit: string;
+  kcal: number;
   protein_g: number;
   carbs_g: number;
   fat_g: number;
@@ -16,6 +17,7 @@ const mapProductRowToApi = (product: ProductRow): ProductApi => ({
   _id: String(product.id),
   name: product.name,
   unit: product.unit,
+  kcal: toNumber(product.kcal),
   protein_g: toNumber(product.protein_g),
   carbs_g: toNumber(product.carbs_g),
   fat_g: toNumber(product.fat_g),

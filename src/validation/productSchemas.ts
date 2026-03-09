@@ -11,6 +11,7 @@ const macroSchema = z.preprocess((value) => {
 const createProductSchema = z.object({
   name: z.string().trim().min(1, 'name is required'),
   unit: z.string().trim().min(1, 'unit is required'),
+  kcal: macroSchema,
   protein_g: macroSchema,
   carbs_g: macroSchema,
   fat_g: macroSchema,
@@ -19,6 +20,7 @@ const createProductSchema = z.object({
 const updateProductSchema = z.object({
   name: z.string().trim().min(1, 'name is required'),
   unit: z.string().trim().min(1, 'unit is required'),
+  kcal: macroSchema,
   protein_g: macroSchema,
   carbs_g: macroSchema,
   fat_g: macroSchema,

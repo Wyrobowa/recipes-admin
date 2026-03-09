@@ -9,6 +9,7 @@ import {
 type CreateProductInput = {
   name: string;
   unit: string;
+  kcal: number;
   protein_g: number;
   carbs_g: number;
   fat_g: number;

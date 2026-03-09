@@ -16,7 +16,7 @@ beforeEach(async () => {
   }
 
   await getPool().query(
-    'TRUNCATE recipes, categories RESTART IDENTITY CASCADE',
+    'TRUNCATE recipe_products, recipes, products, categories RESTART IDENTITY CASCADE',
   );
 });
 
@@ -58,10 +58,24 @@ test(
     assert.equal(categoryResponse.body.data.name, 'Desserts');
 
     const categoryId = categoryResponse.body.data._id;
+    const productResponse = await request(app).post('/product').send({
+      name: 'Apple',
+      unit: '100g',
+      kcal: 52,
+      protein_g: 0.3,
+      carbs_g: 14,
+      fat_g: 0.2,
+    });
+    const productId = productResponse.body.data._id;
 
     const createRecipeResponse = await request(app)
       .post('/recipe/add')
-      .send({ title: 'Apple pie', recipe: 'Bake it', category: categoryId });
+      .send({
+        title: 'Apple pie',
+        recipe: 'Bake it',
+        category: categoryId,
+        products: [{ productId, quantity: 2 }],
+      });
 
     assert.equal(createRecipeResponse.status, 200);
     assert.equal(createRecipeResponse.body.data.title, 'Apple pie');
@@ -73,6 +87,8 @@ test(
     assert.equal(recipesResponse.body.data.length, 1);
     assert.equal(recipesResponse.body.data[0].category.name, 'Desserts');
     assert.equal(recipesResponse.body.data[0].category._id, categoryId);
+    assert.equal(recipesResponse.body.data[0].products.length, 1);
+    assert.equal(recipesResponse.body.data[0].products[0].product._id, productId);
   },
 );
 
@@ -84,11 +100,21 @@ test(
       .post('/category')
       .send({ name: 'Lunch' });
     const categoryId = categoryResponse.body.data._id;
+    const productResponse = await request(app).post('/product').send({
+      name: 'Tomato',
+      unit: '100g',
+      kcal: 18,
+      protein_g: 0.9,
+      carbs_g: 3.9,
+      fat_g: 0.2,
+    });
+    const productId = productResponse.body.data._id;
 
     await request(app).post('/recipe/add').send({
       title: 'Tomato soup',
       recipe: 'Cook tomatoes',
       category: categoryId,
+      products: [{ productId, quantity: 4 }],
     });
 
     const updateResponse = await request(app)
