@@ -1,6 +1,11 @@
 # Recipes List REST Api
 
-This is a NodeJS (ExpressJS) based REST Api, using MongoDB.
+This is a NodeJS (ExpressJS) based REST Api.
+
+## Environment
+
+- `PORT` - application port
+- `DATABASE_URL` - PostgreSQL connection string (Neon)
 
 ## Scripts
 
