@@ -1,24 +1,29 @@
 const js = require('@eslint/js');
+const tsParser = require('@typescript-eslint/parser');
+const tsPlugin = require('@typescript-eslint/eslint-plugin');
 
 module.exports = [
   js.configs.recommended,
   {
-    files: ['**/*.js'],
-    ignores: ['node_modules/**'],
+    files: ['**/*.ts'],
+    ignores: ['node_modules/**', 'dist/**'],
+    plugins: {
+      '@typescript-eslint': tsPlugin,
+    },
     languageOptions: {
+      parser: tsParser,
       ecmaVersion: 2022,
-      sourceType: 'commonjs',
+      sourceType: 'module',
       globals: {
         __dirname: 'readonly',
         console: 'readonly',
-        module: 'readonly',
         process: 'readonly',
-        require: 'readonly',
       },
     },
     rules: {
       'func-names': 'off',
       'no-console': 'off',
+      '@typescript-eslint/no-explicit-any': 'off',
     },
   },
 ];

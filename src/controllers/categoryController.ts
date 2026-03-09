@@ -1,8 +1,9 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
+import type { Request, Response } from 'express';
 
 const CategoryModel = mongoose.model('Category');
 
-const getCategories = async (req, res) => {
+const getCategories = async (_req: Request, res: Response) => {
   const categories = await CategoryModel.find();
 
   res.json({
@@ -10,7 +11,7 @@ const getCategories = async (req, res) => {
   });
 };
 
-const createCategory = async (req, res) => {
+const createCategory = async (req: Request, res: Response) => {
   const category = new CategoryModel(req.body);
   await category.save();
 
@@ -19,7 +20,4 @@ const createCategory = async (req, res) => {
   });
 };
 
-module.exports = {
-  getCategories,
-  createCategory,
-};
+export { getCategories, createCategory };

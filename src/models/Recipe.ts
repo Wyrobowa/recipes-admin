@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const slug = require('slug');
+import mongoose from 'mongoose';
+import slug from 'slug';
 
 const RecipeSchema = new mongoose.Schema({
   slug: {
@@ -29,17 +29,15 @@ const RecipeSchema = new mongoose.Schema({
   },
 });
 
-RecipeSchema.pre('save', async function (next) {
+RecipeSchema.pre('save', async function () {
   this.slug = slug(this.title);
 
   const slugRegEx = new RegExp(`^(${this.slug})((-[0-9]*$)?)$`, 'i');
-  const recipesWithSlug = await this.constructor.find({ slug: slugRegEx });
+  const recipesWithSlug = await mongoose.model('Recipe').find({ slug: slugRegEx });
 
   if (recipesWithSlug.length) {
     this.slug = `${this.slug}-${recipesWithSlug.length + 1}`;
   }
-
-  next();
 });
 
-module.exports = mongoose.model('Recipe', RecipeSchema);
+export default mongoose.model('Recipe', RecipeSchema);

@@ -1,8 +1,9 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
+import type { Request, Response } from 'express';
 
 const RecipeModel = mongoose.model('Recipe');
 
-const getRecipesList = async (req, res) => {
+const getRecipesList = async (_req: Request, res: Response) => {
   const recipesList = await RecipeModel.find().populate('category');
 
   res.json({
@@ -10,7 +11,7 @@ const getRecipesList = async (req, res) => {
   });
 };
 
-const getRecipe = async (req, res) => {
+const getRecipe = async (req: Request, res: Response) => {
   const { slug } = req.params;
 
   const recipe = await RecipeModel.findOne({ slug }).populate('category');
@@ -20,7 +21,7 @@ const getRecipe = async (req, res) => {
   });
 };
 
-const createRecipe = async (req, res) => {
+const createRecipe = async (req: Request, res: Response) => {
   const recipe = new RecipeModel(req.body);
   await recipe.save();
 
@@ -29,7 +30,7 @@ const createRecipe = async (req, res) => {
   });
 };
 
-const updateRecipe = async (req, res) => {
+const updateRecipe = async (req: Request, res: Response) => {
   const { slug } = req.params;
 
   const recipe = await RecipeModel.findOneAndUpdate({ slug }, req.body);
@@ -39,9 +40,4 @@ const updateRecipe = async (req, res) => {
   });
 };
 
-module.exports = {
-  getRecipesList,
-  getRecipe,
-  createRecipe,
-  updateRecipe,
-};
+export { getRecipesList, getRecipe, createRecipe, updateRecipe };
