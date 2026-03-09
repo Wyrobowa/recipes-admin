@@ -44,8 +44,13 @@ const createCategory = async (name: string): Promise<CategoryRow> => {
 
       return rows[0];
     } catch (error) {
-      const pgError = error as QueryResultRow & { code?: string; constraint?: string };
-      const isSlugConflict = pgError.code === '23505' && pgError.constraint === 'categories_slug_key';
+      const pgError = error as QueryResultRow & {
+        code?: string;
+        constraint?: string;
+      };
+      const isSlugConflict =
+        pgError.code === '23505' &&
+        pgError.constraint === 'categories_slug_key';
 
       if (!isSlugConflict) {
         throw error;

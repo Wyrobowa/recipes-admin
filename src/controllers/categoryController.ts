@@ -1,26 +1,22 @@
 import type { Request, Response } from 'express';
-import { createCategory as createCategoryRepo, listCategories } from '../repositories/categoryRepository';
-
-const mapCategoryToApi = (category: { id: number; slug: string; name: string }) => ({
-  _id: String(category.id),
-  slug: category.slug,
-  name: category.name,
-  __v: 0,
-});
+import {
+  createCategory as createCategoryService,
+  getCategories as getCategoriesService,
+} from '../services/categoryService';
 
 const getCategories = async (_req: Request, res: Response) => {
-  const categories = await listCategories();
+  const categories = await getCategoriesService();
 
   res.json({
-    data: categories.map(mapCategoryToApi),
+    data: categories,
   });
 };
 
 const createCategory = async (req: Request, res: Response) => {
-  const category = await createCategoryRepo(req.body.name);
+  const category = await createCategoryService(req.body);
 
   res.json({
-    data: mapCategoryToApi(category),
+    data: category,
   });
 };
 

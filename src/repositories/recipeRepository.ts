@@ -78,7 +78,9 @@ const listRecipes = async (): Promise<RecipeWithCategoryRow[]> => {
   return rows;
 };
 
-const getRecipeBySlug = async (slug: string): Promise<RecipeWithCategoryRow | null> => {
+const getRecipeBySlug = async (
+  slug: string,
+): Promise<RecipeWithCategoryRow | null> => {
   const { rows } = await getPool().query<RecipeWithCategoryRow>(
     `
       SELECT
@@ -119,13 +121,21 @@ const createRecipe = async (input: CreateRecipeInput): Promise<RecipeRow> => {
           VALUES($1, $2, $3, $4, $5, $6)
           RETURNING id, slug, title, description, recipe, photo, category_id, created_at, updated_at
         `,
-        [input.title, input.description ?? null, input.recipe, photo, candidateSlug, categoryId],
+        [
+          input.title,
+          input.description ?? null,
+          input.recipe,
+          photo,
+          candidateSlug,
+          categoryId,
+        ],
       );
 
       return rows[0];
     } catch (error) {
       const pgError = error as { code?: string; constraint?: string };
-      const isSlugConflict = pgError.code === '23505' && pgError.constraint === 'recipes_slug_key';
+      const isSlugConflict =
+        pgError.code === '23505' && pgError.constraint === 'recipes_slug_key';
 
       if (!isSlugConflict) {
         throw error;
@@ -222,5 +232,15 @@ const updateRecipeBySlugAndReturnPrevious = async (
   }
 };
 
-export { listRecipes, getRecipeBySlug, createRecipe, updateRecipeBySlugAndReturnPrevious };
-export type { RecipeRow, RecipeWithCategoryRow, CreateRecipeInput, UpdateRecipeInput };
+export {
+  listRecipes,
+  getRecipeBySlug,
+  createRecipe,
+  updateRecipeBySlugAndReturnPrevious,
+};
+export type {
+  RecipeRow,
+  RecipeWithCategoryRow,
+  CreateRecipeInput,
+  UpdateRecipeInput,
+};
