@@ -1,5 +1,5 @@
-import slugify from 'slug';
 import { getPool } from '../db/postgres';
+import { toSlug } from '../utils/toSlug';
 
 type CategoryRow = {
   id: number;
@@ -26,7 +26,7 @@ const listCategories = async (): Promise<CategoryRow[]> => {
 };
 
 const createCategory = async (name: string): Promise<CategoryRow> => {
-  const baseSlug = slugify(name);
+  const baseSlug = toSlug(name);
 
   for (let attempt = 0; attempt < 50; attempt += 1) {
     const candidateSlug = buildSlugCandidate(baseSlug, attempt);

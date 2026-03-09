@@ -1,5 +1,5 @@
-import slugify from 'slug';
 import { getPool } from '../db/postgres';
+import { toSlug } from '../utils/toSlug';
 
 type RecipeRow = {
   id: number;
@@ -107,7 +107,7 @@ const getRecipeBySlug = async (
 };
 
 const createRecipe = async (input: CreateRecipeInput): Promise<RecipeRow> => {
-  const baseSlug = slugify(input.title);
+  const baseSlug = toSlug(input.title);
   const categoryId = toCategoryId(input.category);
   const photo = input.photo || DEFAULT_PHOTO;
 

@@ -23,6 +23,18 @@ This is a NodeJS (ExpressJS) based REST Api.
 - Run integration tests: `npm test`
 - Tests require `DATABASE_URL`; if missing, DB integration tests are skipped.
 
+## Deploy (Vercel)
+
+- Serverless entrypoint: `api/index.ts`
+- Rewrites config: `vercel.json` (keeps API routes at root, e.g. `/recipes`)
+- Health endpoint: `GET /health`
+
+Deploy steps:
+
+1. Authenticate CLI: `npx vercel login`
+2. Set env in Vercel project: `DATABASE_URL` (Neon connection string)
+3. Deploy production: `npx vercel --prod`
+
 ## Scripts
 
 - `npm run dev` - run app in watch mode with TypeScript.
