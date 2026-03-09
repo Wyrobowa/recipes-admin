@@ -13,9 +13,6 @@ dotenv.config();
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-import './models/Category';
-import './models/Recipe';
-
 import recipeRoute from './routes/recipeRoute';
 import categoryRoute from './routes/categoryRoute';
 

@@ -1,22 +1,26 @@
-import mongoose from 'mongoose';
 import type { Request, Response } from 'express';
+import { createCategory as createCategoryRepo, listCategories } from '../repositories/categoryRepository';
 
-const CategoryModel = mongoose.model('Category');
+const mapCategoryToApi = (category: { id: number; slug: string; name: string }) => ({
+  _id: String(category.id),
+  slug: category.slug,
+  name: category.name,
+  __v: 0,
+});
 
 const getCategories = async (_req: Request, res: Response) => {
-  const categories = await CategoryModel.find();
+  const categories = await listCategories();
 
   res.json({
-    data: categories,
+    data: categories.map(mapCategoryToApi),
   });
 };
 
 const createCategory = async (req: Request, res: Response) => {
-  const category = new CategoryModel(req.body);
-  await category.save();
+  const category = await createCategoryRepo(req.body.name);
 
   res.json({
-    data: category,
+    data: mapCategoryToApi(category),
   });
 };
 
