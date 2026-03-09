@@ -3,6 +3,7 @@ import path from 'path';
 import cors from 'cors';
 import recipeRoute from './routes/recipeRoute';
 import categoryRoute from './routes/categoryRoute';
+import productRoute from './routes/productRoute';
 import { errorHandler } from './middlewares/errorHandler';
 
 const createApp = () => {
@@ -18,6 +19,7 @@ const createApp = () => {
 
   app.use('/', recipeRoute);
   app.use('/', categoryRoute);
+  app.use('/', productRoute);
 
   app.use('/img', express.static(path.join(__dirname, '../public/img')));
   app.use(errorHandler);
