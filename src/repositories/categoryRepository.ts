@@ -60,5 +60,57 @@ const createCategory = async (name: string): Promise<CategoryRow> => {
   throw new Error('Could not generate unique category slug');
 };
 
-export { listCategories, createCategory };
+const updateCategoryById = async (
+  id: number,
+  name: string,
+): Promise<CategoryRow | null> => {
+  const baseSlug = toSlug(name);
+
+  for (let attempt = 0; attempt < 50; attempt += 1) {
+    const candidateSlug = buildSlugCandidate(baseSlug, attempt);
+
+    try {
+      const { rows } = await getPool().query<CategoryRow>(
+        `
+          UPDATE categories
+          SET name = $1, slug = $2, updated_at = NOW()
+          WHERE id = $3
+          RETURNING id, slug, name, created_at, updated_at
+        `,
+        [name, candidateSlug, id],
+      );
+
+      return rows[0] ?? null;
+    } catch (error) {
+      const pgError = error as {
+        code?: string;
+        constraint?: string;
+      };
+      const isSlugConflict =
+        pgError.code === '23505' &&
+        pgError.constraint === 'categories_slug_key';
+
+      if (!isSlugConflict) {
+        throw error;
+      }
+    }
+  }
+
+  throw new Error('Could not generate unique category slug');
+};
+
+const deleteCategoryById = async (id: number): Promise<CategoryRow | null> => {
+  const { rows } = await getPool().query<CategoryRow>(
+    `
+      DELETE FROM categories
+      WHERE id = $1
+      RETURNING id, slug, name, created_at, updated_at
+    `,
+    [id],
+  );
+
+  return rows[0] ?? null;
+};
+
+export { listCategories, createCategory, updateCategoryById, deleteCategoryById };
 export type { CategoryRow };

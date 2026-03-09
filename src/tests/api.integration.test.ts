@@ -104,3 +104,50 @@ test(
     assert.equal(getResponse.body.data.title, 'Tomato soup updated');
   },
 );
+
+test(
+  'PUT /category/:id updates category name and slug',
+  { skip: !hasDatabase },
+  async () => {
+    const createResponse = await request(app)
+      .post('/category')
+      .send({ name: 'Desserts' });
+
+    const categoryId = createResponse.body.data._id;
+
+    const updateResponse = await request(app)
+      .put(`/category/${categoryId}`)
+      .send({ name: 'Sweet dishes' });
+
+    assert.equal(updateResponse.status, 200);
+    assert.equal(updateResponse.body.data.name, 'Sweet dishes');
+    assert.equal(updateResponse.body.data.slug, 'sweet-dishes');
+
+    const listResponse = await request(app).get('/categories');
+
+    assert.equal(listResponse.status, 200);
+    assert.equal(listResponse.body.data[0].name, 'Sweet dishes');
+  },
+);
+
+test(
+  'DELETE /category/:id removes category',
+  { skip: !hasDatabase },
+  async () => {
+    const createResponse = await request(app)
+      .post('/category')
+      .send({ name: 'Breakfast' });
+
+    const categoryId = createResponse.body.data._id;
+
+    const deleteResponse = await request(app).delete(`/category/${categoryId}`);
+
+    assert.equal(deleteResponse.status, 200);
+    assert.equal(deleteResponse.body.data.name, 'Breakfast');
+
+    const listResponse = await request(app).get('/categories');
+
+    assert.equal(listResponse.status, 200);
+    assert.equal(listResponse.body.data.length, 0);
+  },
+);

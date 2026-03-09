@@ -1,7 +1,16 @@
 import { mapCategoryRowToApi, type CategoryApi } from '../mappers/categoryMapper';
-import { createCategory as createCategoryRepo, listCategories } from '../repositories/categoryRepository';
+import {
+  createCategory as createCategoryRepo,
+  deleteCategoryById,
+  listCategories,
+  updateCategoryById,
+} from '../repositories/categoryRepository';
 
 type CreateCategoryInput = {
+  name: string;
+};
+
+type UpdateCategoryInput = {
   name: string;
 };
 
@@ -15,5 +24,18 @@ const createCategory = async (input: CreateCategoryInput): Promise<CategoryApi> 
   return mapCategoryRowToApi(category);
 };
 
-export { getCategories, createCategory };
-export type { CategoryApi, CreateCategoryInput };
+const updateCategory = async (
+  id: number,
+  input: UpdateCategoryInput,
+): Promise<CategoryApi | null> => {
+  const category = await updateCategoryById(id, input.name);
+  return category ? mapCategoryRowToApi(category) : null;
+};
+
+const deleteCategory = async (id: number): Promise<CategoryApi | null> => {
+  const category = await deleteCategoryById(id);
+  return category ? mapCategoryRowToApi(category) : null;
+};
+
+export { getCategories, createCategory, updateCategory, deleteCategory };
+export type { CategoryApi, CreateCategoryInput, UpdateCategoryInput };
