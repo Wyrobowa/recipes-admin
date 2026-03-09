@@ -1,27 +1,10 @@
-import express from 'express';
-import path from 'path';
 import dotenv from 'dotenv';
-import cors from 'cors';
 import { connectPostgres } from './db/postgres';
-import { errorHandler } from './middlewares/errorHandler';
-
-const app = express();
-
-app.use(cors());
+import { createApp } from './app';
 
 dotenv.config();
 
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
-
-import recipeRoute from './routes/recipeRoute';
-import categoryRoute from './routes/categoryRoute';
-
-app.use('/', recipeRoute);
-app.use('/', categoryRoute);
-
-app.use('/img', express.static(path.join(__dirname, '../public/img')));
-app.use(errorHandler);
+const app = createApp();
 
 app.set('port', process.env.PORT || 3000);
 

@@ -1,5 +1,4 @@
 import slugify from 'slug';
-import type { QueryResultRow } from 'pg';
 import { getPool } from '../db/postgres';
 
 type CategoryRow = {
@@ -44,7 +43,7 @@ const createCategory = async (name: string): Promise<CategoryRow> => {
 
       return rows[0];
     } catch (error) {
-      const pgError = error as QueryResultRow & {
+      const pgError = error as {
         code?: string;
         constraint?: string;
       };
@@ -62,3 +61,4 @@ const createCategory = async (name: string): Promise<CategoryRow> => {
 };
 
 export { listCategories, createCategory };
+export type { CategoryRow };

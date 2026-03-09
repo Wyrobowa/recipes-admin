@@ -8,10 +8,11 @@
     "build": "tsc -p tsconfig.json",
     "start": "node dist/server.js",
     "migrate": "tsx src/db/migrations/runMigrations.ts",
+    "migrate:create": "tsx src/db/migrations/createMigration.ts",
     "lint": "echo '=> linting ts' && eslint src --ext .ts",
     "format": "prettier . --write",
     "format:check": "prettier . --check",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node --import tsx --test src/tests/**/*.test.ts"
   },
   "repository": {
     "type": "git",
@@ -38,11 +39,13 @@
     "@types/node": "^25.3.5",
     "@types/pg": "^8.18.0",
     "@types/slug": "^5.0.9",
+    "@types/supertest": "^7.2.0",
     "@typescript-eslint/eslint-plugin": "^8.56.1",
     "@typescript-eslint/parser": "^8.56.1",
     "eslint": "^10.0.3",
     "nodemon": "^3.1.14",
     "prettier": "^3.8.1",
+    "supertest": "^7.2.2",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"
   }
