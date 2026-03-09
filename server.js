@@ -1,7 +1,6 @@
 const express = require('express');
 const path = require('path');
 const dotenv = require('dotenv');
-const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
@@ -14,23 +13,16 @@ app.use(cors());
 dotenv.config();
 
 // Body Parser Config
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 
 // Models
 require('./models/Category');
 require('./models/Recipe');
 
 // DB Connection
-const mongoConnectOptions = {
-  useCreateIndex: true,
-  useFindAndModify: false,
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-};
-
 mongoose
-  .connect(process.env.DATABASE, mongoConnectOptions)
+  .connect(process.env.DATABASE)
   .then(() => console.log('DB connected!'))
   .catch((error) => console.log(error));
 
