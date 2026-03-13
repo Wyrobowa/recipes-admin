@@ -1,6 +1,6 @@
-# API Contract (Pre-PostgreSQL Migration Baseline)
+# API Contract
 
-This document captures the current HTTP contract that must remain stable while replacing MongoDB with PostgreSQL.
+This document captures the current HTTP contract for the PostgreSQL-backed API.
 
 ## Base behavior
 
@@ -22,7 +22,7 @@ Response body:
 {
   "data": [
     {
-      "_id": "mongo-object-id",
+      "_id": "1",
       "slug": "desserts",
       "name": "Desserts",
       "__v": 0
@@ -54,7 +54,7 @@ Response body:
 ```json
 {
   "data": {
-    "_id": "mongo-object-id",
+    "_id": "1",
     "slug": "desserts",
     "name": "Desserts",
     "__v": 0
@@ -74,14 +74,14 @@ Response body:
 {
   "data": [
     {
-      "_id": "mongo-object-id",
+      "_id": "1",
       "slug": "apple-pie",
       "title": "Apple pie",
       "description": "Optional text",
       "recipe": "Preparation steps",
       "photo": "http://localhost:3000/img/default.jpg",
       "category": {
-        "_id": "mongo-object-id",
+        "_id": "1",
         "slug": "desserts",
         "name": "Desserts",
         "__v": 0
@@ -101,14 +101,14 @@ Response body:
 ```json
 {
   "data": {
-    "_id": "mongo-object-id",
+    "_id": "1",
     "slug": "apple-pie",
     "title": "Apple pie",
     "description": "Optional text",
     "recipe": "Preparation steps",
     "photo": "http://localhost:3000/img/default.jpg",
     "category": {
-      "_id": "mongo-object-id",
+      "_id": "1",
       "slug": "desserts",
       "name": "Desserts",
       "__v": 0
@@ -134,7 +134,7 @@ Request body:
   "description": "Optional text",
   "recipe": "Preparation steps",
   "photo": "Optional image URL",
-  "category": "mongo-category-object-id"
+  "category": "1"
 }
 ```
 
@@ -144,20 +144,20 @@ Current model behavior:
 - `slug` is generated from `title`
 - `slug` uniqueness rule appends suffix: `slug`, `slug-2`, `slug-3`, ...
 - `photo` default: `http://localhost:3000/img/default.jpg`
-- `category` default: `5e849f2cd339b789aa881e2d` (legacy hardcoded ObjectId)
+- `category` is optional; when provided it must be an existing category ID
 
 Response body:
 
 ```json
 {
   "data": {
-    "_id": "mongo-object-id",
+    "_id": "1",
     "slug": "apple-pie",
     "title": "Apple pie",
     "description": "Optional text",
     "recipe": "Preparation steps",
     "photo": "http://localhost:3000/img/default.jpg",
-    "category": "mongo-category-object-id",
+    "category": "1",
     "__v": 0
   }
 }
@@ -177,19 +177,19 @@ Response body:
 ```json
 {
   "data": {
-    "_id": "mongo-object-id",
+    "_id": "1",
     "slug": "apple-pie",
     "title": "Apple pie",
     "description": "Optional text",
     "recipe": "Preparation steps",
     "photo": "http://localhost:3000/img/default.jpg",
-    "category": "mongo-category-object-id",
+    "category": "1",
     "__v": 0
   }
 }
 ```
 
-## Migration parity checklist
+## Contract notes
 
 - Keep endpoint paths and methods unchanged.
 - Keep `{ "data": ... }` wrapper unchanged.
