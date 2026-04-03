@@ -26,7 +26,7 @@
   "homepage": "https://github.com/Wyrobowa/recipes-admin#readme",
   "dependencies": {
     "cors": "^2.8.6",
-    "dotenv": "^17.3.1",
+    "dotenv": "^17.4.0",
     "express": "^5.2.1",
     "pg": "^8.20.0",
     "zod": "^4.3.6"
