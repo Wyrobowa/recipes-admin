@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Use Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Test
+        run: npm test
+
+      # No lint step: `eslint.config.js` requires @typescript-eslint/parser and
+      # @typescript-eslint/eslint-plugin, neither of which is in devDependencies.
+      # `npm run lint` exits 2 with "Cannot find module". Adding the missing deps
+      # is a dependency change and needs its own issue.
